@@ -31,8 +31,6 @@ public class FloatingWindow extends Service {
     private WindowManager.LayoutParams floatWindowLayoutParam;
     private WindowManager windowManager;
     private Button maximizeBtn;
-    private EditText descEditArea;
-    private Button saveBtn;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -62,14 +60,6 @@ public class FloatingWindow extends Service {
         // The Buttons and the EditText are connected with
         // the corresponding component id used in floating_layout xml file
         maximizeBtn = floatView.findViewById(R.id.buttonMaximize);
-        descEditArea = floatView.findViewById(R.id.descEditText);
-        saveBtn = floatView.findViewById(R.id.saveBtn);
-
-        // Just like MainActivity, the text written
-        // in Maximized will stay
-        descEditArea.setText(Common.currentDesc);
-        descEditArea.setSelection(descEditArea.getText().toString().length());
-        descEditArea.setCursorVisible(false);
 
         // WindowManager.LayoutParams takes a lot of parameters to set the
         // the parameters of the layout. One of them is Layout_type.
@@ -95,11 +85,11 @@ public class FloatingWindow extends Service {
         // 5) Next parameter is Layout_Format. System chooses a format that supports
         // translucency by PixelFormat.TRANSLUCENT
         floatWindowLayoutParam = new WindowManager.LayoutParams(
-                (int) (width * (0.55f)),
-                (int) (height * (0.58f)),
+                (int) (width * (Common.percentage_size_decrease)),
+                (int) (height * (Common.percentage_size_decrease)),
                 LAYOUT_TYPE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT
+                PixelFormat.OPAQUE
         );
 
         // The Gravity of the Floating Window is set.
@@ -136,25 +126,6 @@ public class FloatingWindow extends Service {
                 // kill the existing task first and then new activity is started.
                 backToHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(backToHome);
-            }
-        });
-
-        // The EditText string will be stored
-        // in currentDesc while writing
-        descEditArea.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // Not Necessary
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Common.currentDesc = descEditArea.getText().toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Not Necessary
             }
         });
 
@@ -204,49 +175,6 @@ public class FloatingWindow extends Service {
         // so no input is possible to the EditText. But that's a problem.
         // So, the problem is solved here. The Layout Flag is
         // changed when the EditText is touched.
-        descEditArea.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                descEditArea.setCursorVisible(true);
-                WindowManager.LayoutParams floatWindowLayoutParamUpdateFlag = floatWindowLayoutParam;
-                // Layout Flag is changed to FLAG_NOT_TOUCH_MODAL which
-                // helps to take inputs inside floating window, but
-                // while in EditText the back button won't work and
-                // FLAG_LAYOUT_IN_SCREEN flag helps to keep the window
-                // always over the keyboard
-                floatWindowLayoutParamUpdateFlag.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
-
-                // WindowManager is updated with the Updated Parameters
-                windowManager.updateViewLayout(floatView, floatWindowLayoutParamUpdateFlag);
-                return false;
-            }
-        });
-
-
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // saves the text in savedDesc variable
-                Common.savedDesc = descEditArea.getText().toString();
-                descEditArea.setCursorVisible(false);
-                WindowManager.LayoutParams floatWindowLayoutParamUpdateFlag = floatWindowLayoutParam;
-                floatWindowLayoutParamUpdateFlag.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-
-                // The Layout Flag is changed back to FLAG_NOT_FOCUSABLE. and the Layout is updated with new Flag
-                windowManager.updateViewLayout(floatView, floatWindowLayoutParamUpdateFlag);
-
-                // INPUT_METHOD_SERVICE with Context is used
-                // to retrieve a InputMethodManager for
-                // accessing input methods which is the soft keyboard here
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                // The soft keyboard slides back in
-                inputMethodManager.hideSoftInputFromWindow(floatView.getApplicationWindowToken(), 0);
-
-                // A Toast is shown when the text is saved
-                Toast.makeText(FloatingWindow.this, "Text Saved!!!", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     // It is called when stopService()
