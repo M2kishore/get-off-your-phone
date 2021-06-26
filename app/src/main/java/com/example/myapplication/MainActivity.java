@@ -92,18 +92,19 @@ import java.util.Locale;
             @Override
             public void onClick(View v) {
                 resetTimer();
+                stopService(new Intent(MainActivity.this, FloatingWindow.class));
             }
+
         });
 
 
         // If the app is started again while the
         // floating window service is running
         // then the floating window service will stop
-        if (isMyServiceRunning()) {
+        //if (isMyServiceRunning()) {
             // onDestroy() method in FloatingWindow
             // class will be called here
-            stopService(new Intent(MainActivity.this, FloatingWindow.class));
-        }
+        //}
 
         // currentDesc String will be empty
         // at first time launch
