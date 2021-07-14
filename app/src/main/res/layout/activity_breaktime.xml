@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Breaktime">
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -108,9 +107,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_gradient"
             android:text="start"
-            app:backgroundTint="?android:attr/textColorHint"
             app:backgroundTintMode="add" />
 
         <Button
@@ -123,10 +120,8 @@
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_gradient"
             android:text="Reset"
             android:visibility="invisible"
-            app:backgroundTint="?android:attr/textColorHint"
             app:backgroundTintMode="add" />
     </LinearLayout>
 

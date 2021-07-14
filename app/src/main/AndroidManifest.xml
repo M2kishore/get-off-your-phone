@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".BreakTime"></activity>
+        <activity android:name=".TimeOfTheDay"></activity>
         <service android:name=".FloatingWindow"></service>
     </application>
 
