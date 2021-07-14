@@ -16,6 +16,9 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class FloatingWindow extends Service {
     // The reference variables for the
     // ViewGroup, WindowManager.LayoutParams,
@@ -85,6 +88,15 @@ public class FloatingWindow extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.OPAQUE
         );
+//        new Timer().scheduleAtFixedRate(new TimerTask(){
+//            @Override
+//            public void run(){
+//                final WindowManager.LayoutParams floatWindowLayoutUpdateParam = floatWindowLayoutParam;
+//                floatWindowLayoutUpdateParam.width = floatWindowLayoutUpdateParam.width + 200;
+//                floatWindowLayoutUpdateParam.height = floatWindowLayoutUpdateParam.height + 200;
+//                windowManager.updateViewLayout(floatView, floatWindowLayoutUpdateParam);
+//            }
+//        },1000,10);
 
         // The Gravity of the Floating Window is set.
         // The Window will appear in the center of the screen
@@ -142,6 +154,9 @@ public class FloatingWindow extends Service {
                     case MotionEvent.ACTION_DOWN:
                         x = floatWindowLayoutUpdateParam.x;
                         y = floatWindowLayoutUpdateParam.y;
+                        floatWindowLayoutUpdateParam.width = floatWindowLayoutUpdateParam.width+100;
+                        floatWindowLayoutUpdateParam.height = floatWindowLayoutUpdateParam.height+100;
+
 
                         // returns the original raw X
                         // coordinate of this event
@@ -176,6 +191,7 @@ public class FloatingWindow extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Common.percentage_size_decrease = (float) 0.30;
         stopSelf();
         // Window is removed from the screen
         windowManager.removeView(floatView);
