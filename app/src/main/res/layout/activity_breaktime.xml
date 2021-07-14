@@ -62,7 +62,6 @@
             android:hint="Minutes"
             android:inputType="number"
             android:maxLength="4"
-            android:text="Minutes"
             android:textColor="#59000000" />
 
         <Button
