@@ -1,13 +1,10 @@
 package com.example.myapplication;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,10 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -117,7 +111,7 @@ public class FloatingWindow extends Service {
 
                 // The app will maximize again. So the MainActivity
                 // class will be called again.
-                Intent backToHome = new Intent(FloatingWindow.this, MainActivity.class);
+                Intent backToHome = new Intent(FloatingWindow.this, BreakTime.class);
 
                 // 1) FLAG_ACTIVITY_NEW_TASK flag helps activity to start a new task on the history stack.
                 // If a task is already running like the floating window service, a new activity will not be started.
